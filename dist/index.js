@@ -40,7 +40,7 @@ require('./sourcemap-register.js');module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(932);
+/******/ 		return __webpack_require__(351);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -78,7 +78,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = __webpack_require__(351);
+const command_1 = __webpack_require__(241);
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 /**
@@ -285,24 +285,7 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 258:
-/***/ (function(module) {
-
-let wait = function (milliseconds) {
-  return new Promise((resolve) => {
-    if (typeof milliseconds !== 'number') {
-      throw new Error('milliseconds not a number');
-    }
-    setTimeout(() => resolve("done!"), milliseconds)
-  });
-};
-
-module.exports = wait;
-
-
-/***/ }),
-
-/***/ 351:
+/***/ 241:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
@@ -401,18 +384,28 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 622:
+/***/ 312:
 /***/ (function(module) {
 
-module.exports = require("path");
+let wait = function (milliseconds) {
+  return new Promise((resolve) => {
+    if (typeof milliseconds !== 'number') {
+      throw new Error('milliseconds not a number');
+    }
+    setTimeout(() => resolve("done!"), milliseconds)
+  });
+};
+
+module.exports = wait;
+
 
 /***/ }),
 
-/***/ 932:
+/***/ 351:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(186);
-const wait = __webpack_require__(258);
+const wait = __webpack_require__(312);
 
 
 // most @actions toolkit packages have async methods
@@ -433,6 +426,13 @@ async function run() {
 
 run();
 
+
+/***/ }),
+
+/***/ 622:
+/***/ (function(module) {
+
+module.exports = require("path");
 
 /***/ })
 
