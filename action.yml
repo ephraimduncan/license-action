@@ -10,6 +10,9 @@ inputs:
   AUTHOR:
     description: 'Author of Project'
     required: true
+  EMAIL:
+    description: 'Email of the Author'
+    required: true
   PROJECT_NAME:
     description: 'Project Name'
     required: false
