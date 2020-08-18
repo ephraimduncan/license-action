@@ -4,6 +4,7 @@ node_modules/
 .vscode/
 .idea/
 *.iml
+test/
 
 # Logs
 logs
