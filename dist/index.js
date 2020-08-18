@@ -40,7 +40,7 @@ require('./sourcemap-register.js');module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(351);
+/******/ 		return __webpack_require__(932);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -479,7 +479,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = __webpack_require__(241);
+const command_1 = __webpack_require__(351);
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 /**
@@ -1249,105 +1249,6 @@ function asNumber(source, onNaN = 0) {
 }
 exports.asNumber = asNumber;
 //# sourceMappingURL=util.js.map
-
-/***/ }),
-
-/***/ 241:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const os = __importStar(__webpack_require__(87));
-/**
- * Commands
- *
- * Command Format:
- *   ::name key=value,key=value::message
- *
- * Examples:
- *   ::warning::This is the message
- *   ::set-env name=MY_VAR::some value
- */
-function issueCommand(command, properties, message) {
-    const cmd = new Command(command, properties, message);
-    process.stdout.write(cmd.toString() + os.EOL);
-}
-exports.issueCommand = issueCommand;
-function issue(name, message = '') {
-    issueCommand(name, {}, message);
-}
-exports.issue = issue;
-const CMD_STRING = '::';
-class Command {
-    constructor(command, properties, message) {
-        if (!command) {
-            command = 'missing.command';
-        }
-        this.command = command;
-        this.properties = properties;
-        this.message = message;
-    }
-    toString() {
-        let cmdStr = CMD_STRING + this.command;
-        if (this.properties && Object.keys(this.properties).length > 0) {
-            cmdStr += ' ';
-            let first = true;
-            for (const key in this.properties) {
-                if (this.properties.hasOwnProperty(key)) {
-                    const val = this.properties[key];
-                    if (val) {
-                        if (first) {
-                            first = false;
-                        }
-                        else {
-                            cmdStr += ',';
-                        }
-                        cmdStr += `${key}=${escapeProperty(val)}`;
-                    }
-                }
-            }
-        }
-        cmdStr += `${CMD_STRING}${escapeData(this.message)}`;
-        return cmdStr;
-    }
-}
-/**
- * Sanitizes an input into a string so it can be passed into issueCommand safely
- * @param input input to sanitize into a string
- */
-function toCommandValue(input) {
-    if (input === null || input === undefined) {
-        return '';
-    }
-    else if (typeof input === 'string' || input instanceof String) {
-        return input;
-    }
-    return JSON.stringify(input);
-}
-exports.toCommandValue = toCommandValue;
-function escapeData(s) {
-    return toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A');
-}
-function escapeProperty(s) {
-    return toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A')
-        .replace(/:/g, '%3A')
-        .replace(/,/g, '%2C');
-}
-//# sourceMappingURL=command.js.map
 
 /***/ }),
 
@@ -2164,149 +2065,101 @@ formatters.O = function (v) {
 /***/ }),
 
 /***/ 351:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
-const core = __webpack_require__(186);
-const simpleGit = __webpack_require__(577);
-const git = simpleGit();
+"use strict";
 
-const {
-  promises: { readdir, copyFile },
-  readFileSync,
-  writeFileSync,
-} = __webpack_require__(747);
-const { join } = __webpack_require__(622);
-
-const mainDirectory = '.';
-
-const license = 'LICENSE';
-let directoryFiles = [];
-let licenseFile = '';
-
-async function checkLicense() {
-  directoryFiles = await readdir(mainDirectory);
-  directoryFiles.forEach((file) => {
-    if (file.toLowerCase() === 'license' || file.toLowerCase() === 'license.md')
-      return (
-        core.info('Unable to Create License. License Available') &&
-        process.exit()
-      );
-  });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const os = __importStar(__webpack_require__(87));
+/**
+ * Commands
+ *
+ * Command Format:
+ *   ::name key=value,key=value::message
+ *
+ * Examples:
+ *   ::warning::This is the message
+ *   ::set-env name=MY_VAR::some value
+ */
+function issueCommand(command, properties, message) {
+    const cmd = new Command(command, properties, message);
+    process.stdout.write(cmd.toString() + os.EOL);
 }
-
-async function createLicense(licenseType) {
-  // Check For License Type
-  async function checkLicenseType() {
-    switch (licenseType) {
-      case 'AGPL':
-        licenseFile = 'agpl-3.0.txt';
-        break;
-      case 'Apache':
-        licenseFile = 'apache-2.0.txt';
-        break;
-      case 'BSD':
-        licenseFile = 'bsd-3.0.txt';
-        break;
-      case 'CC-BY':
-        licenseFile = 'cc-by-4.0.txt';
-        break;
-      case 'CC-BY-NC':
-        licenseFile = 'cc-by-nc-4.0.txt';
-        break;
-      case 'CC-BY-NC-SA':
-        licenseFile = 'cc-by-nc-sa-4.0.txt';
-        break;
-      case 'CC-BY-SA':
-        licenseFile = 'cc-by-sa-4.0.txt';
-        break;
-      case 'CC0':
-        licenseFile = 'cc-zero-1.0.txt';
-        break;
-      case 'GPL':
-        licenseFile = 'gpl-3.0.txt';
-        break;
-      case 'LGPL':
-        licenseFile = 'lgpl-3.0.txt';
-        break;
-      case 'MIT':
-        licenseFile = 'mit.txt';
-        break;
-      case 'MPL':
-        licenseFile = 'mpl-2.0.txt';
-        break;
-      case 'Unlicense':
-        licenseFile = 'unlicense.txt';
-        break;
+exports.issueCommand = issueCommand;
+function issue(name, message = '') {
+    issueCommand(name, {}, message);
+}
+exports.issue = issue;
+const CMD_STRING = '::';
+class Command {
+    constructor(command, properties, message) {
+        if (!command) {
+            command = 'missing.command';
+        }
+        this.command = command;
+        this.properties = properties;
+        this.message = message;
     }
-  }
-
-  await checkLicenseType();
-
-  // Copy Text File
-  await copyFile(
-    join(__dirname, `files/${licenseFile}`),
-    join(mainDirectory, license),
-    (err) => {
-      if (err) throw err;
+    toString() {
+        let cmdStr = CMD_STRING + this.command;
+        if (this.properties && Object.keys(this.properties).length > 0) {
+            cmdStr += ' ';
+            let first = true;
+            for (const key in this.properties) {
+                if (this.properties.hasOwnProperty(key)) {
+                    const val = this.properties[key];
+                    if (val) {
+                        if (first) {
+                            first = false;
+                        }
+                        else {
+                            cmdStr += ',';
+                        }
+                        cmdStr += `${key}=${escapeProperty(val)}`;
+                    }
+                }
+            }
+        }
+        cmdStr += `${CMD_STRING}${escapeData(this.message)}`;
+        return cmdStr;
     }
-  );
 }
-
-async function replaceVariables() {
-  let data = readFileSync(license, 'utf-8');
-  let author = data.replace(/{AUTHOR}/gim, core.getInput('AUTHOR'));
-  writeFileSync(license, author, 'utf-8');
-
-  let data1 = readFileSync(license, 'utf-8');
-  let year = data1.replace(/{YEAR}/gim, new Date().getFullYear());
-  writeFileSync(license, year, 'utf-8');
-
-  let data2 = readFileSync(license, 'utf-8');
-  let projectName = data2.replace(
-    /{PROJECT_NAME}/gim,
-    core.getInput('PROJECT_NAME')
-  );
-  writeFileSync(license, projectName, 'utf-8');
+/**
+ * Sanitizes an input into a string so it can be passed into issueCommand safely
+ * @param input input to sanitize into a string
+ */
+function toCommandValue(input) {
+    if (input === null || input === undefined) {
+        return '';
+    }
+    else if (typeof input === 'string' || input instanceof String) {
+        return input;
+    }
+    return JSON.stringify(input);
 }
-
-async function commitFile() {
-  await git.add('./*');
-  await git.addConfig('user.name', process.env.GITHUB_ACTOR);
-  await git.addConfig('user.email', process.env.GIT_EMAIL);
-  await git.commit(
-    '📝 Added License via https://github.com/dephraiim/license-action'
-  );
-  await git.push();
+exports.toCommandValue = toCommandValue;
+function escapeData(s) {
+    return toCommandValue(s)
+        .replace(/%/g, '%25')
+        .replace(/\r/g, '%0D')
+        .replace(/\n/g, '%0A');
 }
-
-async function run() {
-  try {
-    const license = core.getInput('LICENSE_TYPE');
-
-    // Check If license is present
-    await checkLicense();
-    core.info(`Creating ${license} license ...`);
-
-    // Create License if license is not present
-    await createLicense(license);
-    core.info(`${core.getInput('LICENSE_TYPE')} License Copied`);
-
-    // Replace Name, Project and Year Variable
-    await replaceVariables();
-    core.info('License Info Added');
-
-    // Commit License with Commit Message
-    await commitFile();
-    core.info('License Commit Complete.');
-
-    core.info(`Created ${license} license!`);
-  } catch (error) {
-    core.setFailed(error.message);
-  }
+function escapeProperty(s) {
+    return toCommandValue(s)
+        .replace(/%/g, '%25')
+        .replace(/\r/g, '%0D')
+        .replace(/\n/g, '%0A')
+        .replace(/:/g, '%3A')
+        .replace(/,/g, '%2C');
 }
-
-run();
-
+//# sourceMappingURL=command.js.map
 
 /***/ }),
 
@@ -4663,6 +4516,153 @@ exports.parseCheckIgnore = (text) => {
         .filter(file => !!file);
 };
 //# sourceMappingURL=CheckIgnore.js.map
+
+/***/ }),
+
+/***/ 932:
+/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
+
+const core = __webpack_require__(186);
+const simpleGit = __webpack_require__(577);
+const git = simpleGit();
+
+const {
+  promises: { readdir, copyFile },
+  readFileSync,
+  writeFileSync,
+} = __webpack_require__(747);
+const { join } = __webpack_require__(622);
+
+const mainDirectory = '.';
+
+const license = 'LICENSE';
+let directoryFiles = [];
+let licenseFile = '';
+
+async function checkLicense() {
+  directoryFiles = await readdir(mainDirectory);
+  directoryFiles.forEach((file) => {
+    if (file.toLowerCase() === 'license' || file.toLowerCase() === 'license.md')
+      return (
+        core.info('Unable to Create License. License Available') &&
+        process.exit()
+      );
+  });
+}
+
+async function createLicense(licenseType) {
+  // Check For License Type
+  async function checkLicenseType() {
+    switch (licenseType) {
+      case 'AGPL':
+        licenseFile = 'agpl-3.0.txt';
+        break;
+      case 'Apache':
+        licenseFile = 'apache-2.0.txt';
+        break;
+      case 'BSD':
+        licenseFile = 'bsd-3.0.txt';
+        break;
+      case 'CC-BY':
+        licenseFile = 'cc-by-4.0.txt';
+        break;
+      case 'CC-BY-NC':
+        licenseFile = 'cc-by-nc-4.0.txt';
+        break;
+      case 'CC-BY-NC-SA':
+        licenseFile = 'cc-by-nc-sa-4.0.txt';
+        break;
+      case 'CC-BY-SA':
+        licenseFile = 'cc-by-sa-4.0.txt';
+        break;
+      case 'CC0':
+        licenseFile = 'cc-zero-1.0.txt';
+        break;
+      case 'GPL':
+        licenseFile = 'gpl-3.0.txt';
+        break;
+      case 'LGPL':
+        licenseFile = 'lgpl-3.0.txt';
+        break;
+      case 'MIT':
+        licenseFile = 'mit.txt';
+        break;
+      case 'MPL':
+        licenseFile = 'mpl-2.0.txt';
+        break;
+      case 'Unlicense':
+        licenseFile = 'unlicense.txt';
+        break;
+    }
+  }
+
+  await checkLicenseType();
+
+  // Copy Text File
+  await copyFile(
+    join(__dirname, `files/${licenseFile}`),
+    join(mainDirectory, license),
+    (err) => {
+      if (err) throw err;
+    }
+  );
+}
+
+async function replaceVariables() {
+  let data = readFileSync(license, 'utf-8');
+  let author = data.replace(/{AUTHOR}/gim, core.getInput('AUTHOR'));
+  writeFileSync(license, author, 'utf-8');
+
+  let data1 = readFileSync(license, 'utf-8');
+  let year = data1.replace(/{YEAR}/gim, new Date().getFullYear());
+  writeFileSync(license, year, 'utf-8');
+
+  let data2 = readFileSync(license, 'utf-8');
+  let projectName = data2.replace(
+    /{PROJECT_NAME}/gim,
+    core.getInput('PROJECT_NAME')
+  );
+  writeFileSync(license, projectName, 'utf-8');
+}
+
+async function commitFile() {
+  await git.add('./*');
+  await git.addConfig('user.name', process.env.GITHUB_ACTOR);
+  await git.addConfig('user.email', process.env.GIT_EMAIL);
+  await git.commit(
+    '📝 Added License via https://github.com/dephraiim/license-action'
+  );
+  await git.push();
+}
+
+async function run() {
+  try {
+    const license = core.getInput('LICENSE_TYPE');
+
+    // Check If license is present
+    await checkLicense();
+    core.info(`Creating ${license} license ...`);
+
+    // Create License if license is not present
+    await createLicense(license);
+    core.info(`${core.getInput('LICENSE_TYPE')} License Copied`);
+
+    // Replace Name, Project and Year Variable
+    await replaceVariables();
+    core.info('License Info Added');
+
+    // Commit License with Commit Message
+    await commitFile();
+    core.info('License Commit Complete.');
+
+    core.info(`Created ${license} license!`);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+}
+
+run();
+
 
 /***/ }),
 

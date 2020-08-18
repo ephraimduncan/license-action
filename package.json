@@ -2,9 +2,9 @@
   "name": "license-action",
   "version": "0.1.14",
   "description": "GitHub Action for creating license in repositories",
-  "main": "./src/index.js",
+  "main": "./index.js",
   "scripts": {
-    "build": "ncc build src/index.js -o dist --source-map"
+    "build": "ncc build ./index.js -o dist --source-map"
   },
   "repository": {
     "type": "git",
