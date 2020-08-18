@@ -8,7 +8,7 @@ const token = process.env.GITHUB_TOKEN;
 const octokit = github.getOctokit(token);
 const repoInfo = github.context.repo;
 
-const mainDirectory = join(__dirname, '.');
+const mainDirectory = process.env['GITHUB_WORKSPACE'];
 
 const license = 'LICENSE';
 let directoryFiles = [];
