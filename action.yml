@@ -12,7 +12,7 @@ inputs:
     required: true
   PROJECT_NAME:
     description: 'Project Name'
-    required: true
+    required: false
 
 runs:
   using: 'node12'
