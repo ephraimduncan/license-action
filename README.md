@@ -55,6 +55,7 @@ You can configure the action further with the following options:
 - CC-BY-SA
 - CC0
 - GPL
+- ISC
 - LGPL
 - MIT
 - MPL
@@ -66,12 +67,14 @@ The action supports the following licenses:
 
 - [AGPL-3.0](http://www.gnu.org/licenses/agpl-3.0)
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [BSD-3.0](https://opensource.org/licenses/BSD-3-Clause)
 - [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)
 - [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 - [CC-BY-NC-SA-4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 - [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - [CC0-1.0](http://creativecommons.org/publicdomain/zero/1.0/)
 - [GPL-3.0](http://www.gnu.org/licenses/gpl-3.0)
+- [ISC](https://opensource.org/licenses/ISC)
 - [LGPL-3.0](http://www.gnu.org/licenses/lgpl-3.0)
 - [MIT](https://opensource.org/licenses/MIT)
 - [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/)
