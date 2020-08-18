@@ -2468,7 +2468,7 @@ const token = process.env.GITHUB_TOKEN;
 const octokit = github.getOctokit(token);
 const repoInfo = github.context.repo;
 
-const mainDirectory = process.env['HOME'];
+const mainDirectory = '.';
 
 const license = 'LICENSE';
 let directoryFiles = [];
