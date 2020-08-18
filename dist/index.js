@@ -2167,7 +2167,9 @@ formatters.O = function (v) {
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(186);
-const git = __webpack_require__(577)();
+const simpleGit = __webpack_require__(577);
+const git = simpleGit();
+
 const {
   promises: { readdir, copyFile, readFile, writeFile },
 } = __webpack_require__(747);
@@ -2293,7 +2295,7 @@ async function run() {
 
     // Create License if license is not present
     await createLicense(license);
-    core.info(`${core.getInput('LICENSE_TYPE')} Copied`);
+    core.info(`${core.getInput('LICENSE_TYPE')} License Copied`);
 
     // Replace Name, Project and Year Variable
     await replaceVariables();

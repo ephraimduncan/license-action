@@ -1,5 +1,7 @@
 const core = require('@actions/core');
-const git = require('simple-git/promise')();
+const simpleGit = require('simple-git/promise');
+const git = simpleGit();
+
 const {
   promises: { readdir, copyFile, readFile, writeFile },
 } = require('fs');
@@ -125,7 +127,7 @@ async function run() {
 
     // Create License if license is not present
     await createLicense(license);
-    core.info(`${core.getInput('LICENSE_TYPE')} Copied`);
+    core.info(`${core.getInput('LICENSE_TYPE')} License Copied`);
 
     // Replace Name, Project and Year Variable
     await replaceVariables();
