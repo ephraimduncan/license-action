@@ -2582,7 +2582,7 @@ async function replaceVariables() {
 async function commitFile() {
   const blob = await octokit.git.createBlob({
     ...repoInfo,
-    content: readFile('./LICENSE', (err, data) => {
+    content: readFile(license, (err, data) => {
       if (err) throw err;
       return data.toString('base64');
     }),
@@ -2606,7 +2606,7 @@ async function commitFile() {
     const handleObjects = async (objects) => {
       for (let object of objects) {
         core.debug(`  Caginating ${object.path}`);
-        if (object.type == 'tree' && object.path == './LICENSE') {
+        if (object.type == 'tree' && object.path == license) {
           const innerTree = await octokit.git.getTree({
             ...repoInfo,
             tree_sha: object.sha,
