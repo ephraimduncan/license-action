@@ -9,12 +9,10 @@ inputs:
     default: 'MIT'
   AUTHOR:
     description: 'Author of Project'
-    required: false
-    default: ${{ secrets.GITHUB_ACTOR }}
+    required: true
   PROJECT_NAME:
     description: 'Project Name'
-    required: false
-    default: ${{ secrets.GITHUB_REPOSITORY }}
+    required: true
 
 runs:
   using: 'node12'
