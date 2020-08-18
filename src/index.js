@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const {
-  promises: { readdir, rename, copyFile, readFile, writeFile },
+  promises: { readdir, copyFile, readFile, writeFile },
 } = require('fs');
 const { join } = require('path');
 const token = process.env.GITHUB_TOKEN;
@@ -73,20 +73,20 @@ async function createLicense(licenseType) {
   // Copy Text File
   await copyFile(
     join(__dirname, `files/${licenseFile}`),
-    mainDirectory,
+    join(mainDirectory, license),
     (err) => {
       if (err) throw err;
     }
   );
 
   // Rename Text File
-  await rename(
-    join(__dirname, licenseFile),
-    join(__dirname, license),
-    (err) => {
-      if (err) throw err;
-    }
-  );
+  // await rename(
+  //   join(__dirname, licenseFile),
+  //   join(__dirname, license),
+  //   (err) => {
+  //     if (err) throw err;
+  //   }
+  // );
 }
 
 async function replaceVariables() {
