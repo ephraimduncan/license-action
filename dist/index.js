@@ -4543,10 +4543,8 @@ async function checkLicense() {
   directoryFiles = await readdir(mainDirectory);
   directoryFiles.forEach((file) => {
     if (file.toLowerCase() === 'license' || file.toLowerCase() === 'license.md')
-      return (
-        core.info('Unable to Create License. License Available') &&
-        process.exit()
-      );
+      return core.info('Unable to Create License. License Available');
+    process.exit();
   });
 }
 
