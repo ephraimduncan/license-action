@@ -1,12 +1,9 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
+const git = require('simple-git/promise')();
 const {
   promises: { readdir, copyFile, readFile, writeFile },
 } = require('fs');
 const { join } = require('path');
-const token = process.env.GITHUB_TOKEN;
-const octokit = github.getOctokit(token);
-const repoInfo = github.context.repo;
 
 const mainDirectory = '.';
 
@@ -78,15 +75,6 @@ async function createLicense(licenseType) {
       if (err) throw err;
     }
   );
-
-  // Rename Text File
-  // await rename(
-  //   join(__dirname, licenseFile),
-  //   join(__dirname, license),
-  //   (err) => {
-  //     if (err) throw err;
-  //   }
-  // );
 }
 
 async function replaceVariables() {
@@ -120,77 +108,32 @@ async function replaceVariables() {
 }
 
 async function commitFile() {
-  const blob = await octokit.git.createBlob({
-    ...repoInfo,
-    content: readFile(license, (err, data) => {
-      if (err) throw err;
-      return data.toString('base64');
-    }),
-    encoding: 'base64',
-  });
-  const heads = await octokit.git.listRefs({
-    ...repoInfo,
-    namespace: 'heads/',
-  });
-
-  for (let head of heads.data) {
-    const headCommit = await octokit.git.getCommit({
-      ...repoInfo,
-      commit_sha: head.object.sha,
-    });
-    let tree = await octokit.git.getTree({
-      ...repoInfo,
-      tree_sha: headCommit.data.tree.sha,
-    });
-
-    const handleObjects = async (objects) => {
-      for (let object of objects) {
-        core.debug(`  Caginating ${object.path}`);
-        if (object.type == 'tree' && object.path == license) {
-          const innerTree = await octokit.git.getTree({
-            ...repoInfo,
-            tree_sha: object.sha,
-          });
-          const newTree = await handleObjects(innerTree.data.tree);
-          object.sha = newTree.data.sha;
-        } else if (object.type == 'blob') {
-          object.sha = blob.data.sha;
-        }
-      }
-      return octokit.git.createTree({ ...repoInfo, tree: objects });
-    };
-
-    const newTree = await handleObjects(tree.data.tree);
-    const newCommit = await octokit.git.createCommit({
-      ...repoInfo,
-      tree: newTree.data.sha,
-      message: '📝 Added License via dephraiim/license-action',
-      parents: [headCommit.data.sha],
-    });
-    await octokit.git.updateRef({
-      ...repoInfo,
-      ref: head.ref.substr(5),
-      sha: newCommit.data.sha,
-    });
-  }
+  await git.add('./*');
+  // await git().addConfig('user.name', process.env.GITHUB_ACTOR);
+  // await git().addConfig('user.email', process.env.GIT_EMAIL);
+  await git().commit('📝 Added License via dephraiim/license-action');
+  await git().push();
 }
 
 async function run() {
   try {
     const license = core.getInput('LICENSE_TYPE');
-    core.info(`Creating ${license} license ...`);
 
     // Check If license is present
     await checkLicense();
+    core.info(`Creating ${license} license ...`);
 
     // Create License if license is not present
     await createLicense(license);
+    core.info(`${core.getInput('LICENSE_TYPE')} Copied`);
 
     // Replace Name, Project and Year Variable
     await replaceVariables();
+    core.info('License Info Added');
 
     // Commit License with Commit Message
     await commitFile();
+    core.info('License Commit Complete.');
 
     core.info(`Created ${license} license!`);
   } catch (error) {
