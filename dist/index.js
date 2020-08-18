@@ -2171,7 +2171,9 @@ const simpleGit = __webpack_require__(577);
 const git = simpleGit();
 
 const {
-  promises: { readdir, copyFile, readFile, writeFile },
+  promises: { readdir, copyFile },
+  readFileSync,
+  writeFileSync,
 } = __webpack_require__(747);
 const { join } = __webpack_require__(622);
 
@@ -2248,40 +2250,32 @@ async function createLicense(licenseType) {
 }
 
 async function replaceVariables() {
-  readFile(license, 'utf-8', (err, data) => {
-    if (err) throw err;
+  let data = readFileSync(license, 'utf-8');
+  let author = data.replace(/{AUTHOR}/gim, process.env.GITHUB_ACTOR);
+  writeFileSync(license, author, 'utf-8');
+  core.info('Added License Author');
 
-    let author = data.replace(/{AUTHOR}/gim, core.getInput('AUTHOR'));
-    let year = data.replace(/{YEAR}/gim, new Date().getFullYear());
+  let data1 = readFileSync(license, 'utf-8');
+  let year = data1.replace(/{YEAR}/gim, new Date().getFullYear());
+  writeFileSync(license, year, 'utf-8');
+  core.info('Added License Year');
 
-    writeFile(license, author, 'utf-8', function (err) {
-      if (err) throw err;
-      core.info('License Author Added');
-    });
-
-    writeFile(license, year, 'utf-8', function (err) {
-      if (err) throw err;
-      core.info('License Year Added');
-    });
-
-    if (core.getInput('PROJECT_NAME')) {
-      let projectName = data.replace(
-        /{PROJECT_NAME}/gim,
-        core.getInput('PROJECT_NAME')
-      );
-      writeFile(license, projectName, 'utf-8', function (err) {
-        if (err) throw err;
-        core.info('License Project Name Added');
-      });
-    }
-  });
+  let data2 = readFileSync(license, 'utf-8');
+  let projectName = data2.replace(
+    /{PROJECT_NAME}/gim,
+    core.getInput('PROJECT_NAME')
+  );
+  writeFileSync(license, projectName, 'utf-8');
+  if (core.getInput('PROJECT_NAME')) core.info('Added Project Name');
 }
 
 async function commitFile() {
   await git.add('./*');
   await git.addConfig('user.name', process.env.GITHUB_ACTOR);
   await git.addConfig('user.email', core.getInput('EMAIL'));
-  await git.commit('📝 Added License via dephraiim/license-action');
+  await git.commit(
+    '📝 Added License via https://github.com/dephraiim/license-action'
+  );
   await git.push();
 }
 
