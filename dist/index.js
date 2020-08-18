@@ -2281,8 +2281,8 @@ async function commitFile() {
   await git.add('./*');
   // await git().addConfig('user.name', process.env.GITHUB_ACTOR);
   // await git().addConfig('user.email', process.env.GIT_EMAIL);
-  await git().commit('📝 Added License via dephraiim/license-action');
-  await git().push();
+  await git.commit('📝 Added License via dephraiim/license-action');
+  await git.push();
 }
 
 async function run() {
