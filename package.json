@@ -1,13 +1,12 @@
 {
   "name": "javascript-action",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "JavaScript Action Template",
   "main": "./src/index.js",
   "scripts": {
     "lint": "eslint .",
     "prepare": "ncc build src/index.js -o dist --source-map",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
+    "all": "npm run lint && npm run prepare"
   },
   "repository": {
     "type": "git",
@@ -30,7 +29,6 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.23.0",
-    "eslint": "^7.4.0",
-    "jest": "^26.1.0"
+    "eslint": "^7.4.0"
   }
 }
