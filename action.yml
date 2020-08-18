@@ -7,6 +7,12 @@ inputs:
     description: 'The License Type'
     required: true
     default: 'MIT'
+  AUTHOR:
+    description: 'Author of Project'
+    required: true
+  PROJECT_NAME:
+    description: 'Project Name'
+    required: false
 
 runs:
   using: 'node12'
