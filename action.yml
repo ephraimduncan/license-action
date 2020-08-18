@@ -5,17 +5,16 @@ description: GitHub Action for creating license for Projects.
 inputs:
   LICENSE_TYPE: # id of input
     description: 'The License Type'
-    required: true
+    required: false
     default: 'MIT'
   AUTHOR:
     description: 'Author of Project'
-    required: true
-  EMAIL:
-    description: 'Email of the Author'
-    required: true
+    required: false
+    default: ${{ secrets.GITHUB_ACTOR }}
   PROJECT_NAME:
     description: 'Project Name'
     required: false
+    default: ${{ secrets.GITHUB_REPOSITORY }}
 
 runs:
   using: 'node12'

@@ -1,28 +1,26 @@
 {
-  "name": "javascript-action",
-  "version": "0.1.0",
-  "description": "JavaScript Action Template",
+  "name": "license-action",
+  "version": "0.1.14",
+  "description": "GitHub Action for creating license in repositories",
   "main": "./src/index.js",
   "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build src/index.js -o dist --source-map",
-    "all": "npm run lint && npm run prepare"
+    "build": "ncc build src/index.js -o dist --source-map"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/dephraiim/license-action.git"
   },
   "keywords": [
     "GitHub",
     "Actions",
     "JavaScript"
   ],
-  "author": "",
+  "author": "Ephraim Atta-Duncan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/dephraiim/license-action/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/dephraiim/license-action#readme",
   "dependencies": {
     "@actions/core": "^1.1.1",
     "simple-git": "^2.17.0"

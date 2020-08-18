@@ -19,7 +19,10 @@ async function checkLicense() {
   directoryFiles = await readdir(mainDirectory);
   directoryFiles.forEach((file) => {
     if (file.toLowerCase() === 'license' || file.toLowerCase() === 'license.md')
-      throw new Error('Unable to Create License. License Available');
+      return (
+        core.info('Unable to Create License. License Available') &&
+        process.exit()
+      );
   });
 }
 
@@ -83,14 +86,12 @@ async function createLicense(licenseType) {
 
 async function replaceVariables() {
   let data = readFileSync(license, 'utf-8');
-  let author = data.replace(/{AUTHOR}/gim, process.env.GITHUB_ACTOR);
+  let author = data.replace(/{AUTHOR}/gim, core.getInput('AUTHOR'));
   writeFileSync(license, author, 'utf-8');
-  core.info('Added License Author');
 
   let data1 = readFileSync(license, 'utf-8');
   let year = data1.replace(/{YEAR}/gim, new Date().getFullYear());
   writeFileSync(license, year, 'utf-8');
-  core.info('Added License Year');
 
   let data2 = readFileSync(license, 'utf-8');
   let projectName = data2.replace(
@@ -98,13 +99,12 @@ async function replaceVariables() {
     core.getInput('PROJECT_NAME')
   );
   writeFileSync(license, projectName, 'utf-8');
-  if (core.getInput('PROJECT_NAME')) core.info('Added Project Name');
 }
 
 async function commitFile() {
   await git.add('./*');
   await git.addConfig('user.name', process.env.GITHUB_ACTOR);
-  await git.addConfig('user.email', core.getInput('EMAIL'));
+  await git.addConfig('user.email', process.env.GIT_EMAIL);
   await git.commit(
     '📝 Added License via https://github.com/dephraiim/license-action'
   );

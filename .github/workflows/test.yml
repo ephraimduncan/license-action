@@ -7,18 +7,12 @@ on:
       - 'releases/*'
 
 jobs:
-  # unit tests
-  units:
+  # test action works running from the graph
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci
-
-  # # test action works running from the graph
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: ./
-  #       with:
-  #         milliseconds: 1000
+      - uses: ./dist/index.js
+        with:
+          LICENSE_TYPE: MIT
+          AUTHOR: Ephraim Atta-Duncan
