@@ -23,7 +23,7 @@
   "homepage": "https://github.com/dephraiim/license-action#readme",
   "dependencies": {
     "@actions/core": "^1.1.1",
-    "simple-git": "^2.17.0"
+    "simple-git": "^2.18.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.23.0",
