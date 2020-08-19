@@ -4578,6 +4578,9 @@ async function createLicense(licenseType) {
       case 'GPL':
         licenseFile = 'gpl-3.0.txt';
         break;
+      case 'ISC':
+        licenseFile = 'isc.txt';
+        break;
       case 'LGPL':
         licenseFile = 'lgpl-3.0.txt';
         break;
